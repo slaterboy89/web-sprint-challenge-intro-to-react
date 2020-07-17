@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import './App.css';
+import './App.css'
 import Character from './components/Character'
 
 const App = () => {
@@ -11,39 +11,35 @@ const App = () => {
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
   const [characters, setCharacters] = useState([])
-  const [currentCharacterID, setCurrentCharacterID] = useState(null)
+  // const [currentCharacterID, setCurrentCharacterID] = useState(null)
 
-  const openDetails = id => {
-    setCurrentCharacterID(id)
-  }
+  // const openDetails = id => {
+  //   setCurrentCharacterID(id)
+  // }
 
-  const closeDetails = () => {
-    setCurrentCharacterID(null)
-  }
+  // const closeDetails = () => {
+  //   setCurrentCharacterID(null)
+  // }
 
   useEffect(() => {
-    axios.get( 'https://swapi.dev/api/people/')
-      .then(res => {
-        setCharacters(res.data)
+    axios.get('https://swapi.dev/api/people/')
+    .then(res => {
         console.log(res)
+        setCharacters(res.data.results)
       })
-      .catch(err => {
-        console.log('error')
-      })
+    .catch(err => console.log(err))
   }, [])
-  const myCharacter = ({info}) => (
-    <div className = 'character'>
-      {info.name}
-      <button onclick = {(event) => openDetails(info.id)}>
-        See Details
-        </button>
+
+  return (
+    <div className='App'>
+      <h1 className='Header'>Characters</h1>
+      {characters.map((fr, index) => {
+        return(
+          <Character key={index} name={fr.name} gender={fr.gender} height={fr.height} eye_color={fr.eye_color} />
+        )
+      })}
     </div>
   )
-  return (
-    <div className="App">
-      <h1 className="Header">Characters</h1>
-    </div>
-  );
 }
 
 export default App;
